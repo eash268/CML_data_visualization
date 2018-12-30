@@ -1,0 +1,38 @@
+header, main, footer {
+  padding-left: 300px;
+}
+
+@media only screen and (max-width : 992px) {
+  header, main, footer {
+    padding-left: 0;
+  }
+}
+
+.propic {
+	height: 64px;
+	width: 64px;
+}
+
+.header,
+.content {
+	margin-left: 2rem;
+	margin-right: 2rem;
+}
+
+.card {
+	padding: 16px;
+	padding-left: 0px;
+}
+
+.sidenav {
+	border-right: 1px solid #bdbdbd;
+}
+
+.header-row {
+	border-bottom: 1px solid #bdbdbd;
+}
+
+.footer {
+	bottom: 0;
+	position: relative;
+}

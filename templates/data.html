@@ -1,0 +1,296 @@
+{% extends "base.html" %}
+
+
+{% block sidebar %}
+	{% include 'sidebar.html' %}
+{% endblock %}
+
+
+{% block main %}
+
+<div class="row">
+	<div class="col s12">
+		<div class="card hoverable z-depth-1">
+			<div id="container" style="width:100%; height:300px;"></div>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	{% if scs != 'err' %}
+	<div class="col xl6 s6">
+		<div class="card center-align hoverable z-depth-1">
+			<text class="highcharts-title" style="color:#333333;font-size:18px;fill:#333333;">
+				<tspan>
+					Average Spacial Clustering Score
+				</tspan>
+			</text><br>
+				<div class="preloader-wrapper small active" id="scs_spinner" style="margin-top: 20px">
+				<div class="spinner-layer spinner-blue-only">
+				<div class="circle-clipper left">
+				<div class="circle"></div>
+				</div><div class="gap-patch">
+				<div class="circle"></div>
+				</div><div class="circle-clipper right">
+				<div class="circle"></div>
+				</div>
+				</div>
+				</div>
+			<h5>
+				<p id="scs" style="color: #222C65"></p>
+			</h5>
+
+		</div>
+	</div>
+	{% endif %}
+
+	{% if tcs != 'err' %}
+	<div class="col xl6 s6">
+		<div class="card center-align hoverable z-depth-1">
+			<text class="highcharts-title" style="color:#333333;font-size:18px;fill:#333333;">
+				<tspan>
+					Average Temporal Clustering Score
+				</tspan>
+			</text><br>
+				<div class="preloader-wrapper small active" id="tcs_spinner" style="margin-top: 20px">
+				<div class="spinner-layer spinner-blue-only">
+				<div class="circle-clipper left">
+				<div class="circle"></div>
+				</div><div class="gap-patch">
+				<div class="circle"></div>
+				</div><div class="circle-clipper right">
+				<div class="circle"></div>
+				</div>
+				</div>
+				</div>
+			<h5>
+				<p id="tcs" style="color: #222C65"></p>
+			</h5>
+		</div>
+	</div>
+	{% endif %}
+</div>
+
+<div class="row">
+	<div class="col xl4 l6 m6 s12">
+		<div class="card hoverable z-depth-1">
+			<div id="container2" style="width:100%; height:300px;"></div>
+		</div>
+	</div>
+
+	<div class="col xl4 l6 m6 s12">
+		<div class="card hoverable z-depth-1">
+			<div id="container3" style="width:100%; height:300px;"></div>
+		</div>
+	</div>
+
+	<div class="col xl4 l6 m6 s12">
+		<div class="card hoverable z-depth-1">
+			<div id="container4" style="width:100%; height:300px;"></div>
+		</div>
+	</div>
+</div>
+
+<p class="grey-text text-lighten-2 center-align footer">Kahana Lab 2018. Created by Eash Aggarwal.</p>
+
+<!--
+<div class="row">
+	<div class="col s12 center-align">
+		<h5>Session Paths:</h5>
+		<ul>
+			{% for sess in sessions %}
+				<li> Session {{loop.index}}: {{ sess }}</li>
+			{% endfor %}
+		</ul>
+	</div>
+</div>
+-->
+
+{% endblock %}
+
+{% block scripts %}
+	{{ super() }}
+	<script type="text/javascript">
+
+		lag_crp = JSON.parse('{{ lag_crp|safe }}');
+		pos_crp = [];
+		neg_crp = [];
+		for (key in lag_crp) {
+			if (Number(key) > 0) {
+				pos_crp.push( [Number(key), lag_crp[key]] )
+			} else if (Number(key) < 0) {
+				neg_crp.push( [Number(key), lag_crp[key]] )
+			}
+		}
+
+		neg_crp.sort(sortFunction);
+
+		function sortFunction(a, b) {
+		    if (a[0] === b[0]) {
+		        return 0;
+		    }
+		    else {
+		        return (a[0] < b[0]) ? -1 : 1;
+		    }
+		}
+
+		$(function () { 
+		    var myChart = Highcharts.chart('container', {
+		        chart: {
+		            type: 'bar',
+		        },
+		        title: {
+		            text: '{{ patient_id }} Recall Statistics'
+		        },
+		        credits: {
+			        enabled: false
+			    },
+		        xAxis: {
+		        	title: {
+		                text: 'Session'
+		            }
+		        },
+		        yAxis: {
+		        	max: 1,
+		            title: {
+		                text: ' '
+		            }
+		        },
+		        series: [{
+		        	name: 'Recall',
+		            data: {{precs}},
+		            color: '#2196f3'
+		        }, {
+		        	name: 'PLI & XLI',
+		        	data: {{intrusions}},
+		        	color: '#A31D23'
+		        }, {
+		        	name: 'Repetitions',
+		        	data: {{repeats}},
+		        	color: '#222C65'
+		        }]
+		    });
+		});
+
+		$(function () { 
+		    var myChart2 = Highcharts.chart('container2', {
+		        chart: {
+		            type: 'line',
+		        },
+		        plotOptions: {
+			        series: {
+			            pointStart: 1
+			        }
+			    },
+			    legend: {
+		        	enabled: false
+		        },
+		        title: {
+		            text: 'Serial Position Curve (n={{ num_sessions }})'
+		        },
+		        credits: {
+			        enabled: false
+			    },
+		        xAxis: {
+		        	title: {
+		                text: 'Serial Position'
+		            }
+		        },
+		        yAxis: {
+		        	max: 1,
+		            title: {
+		                text: 'Probability of Recall'
+		            }
+		        },
+		        series: [{
+		        	name: 'Serial Position Curve',
+		            data: {{ avg_spc }},
+		            color: '#222C65'
+		        }]
+		    });
+		});
+
+		$(function () { 
+		    var myChart3 = Highcharts.chart('container3', {
+		        chart: {
+		            type: 'line',
+		        },
+		        plotOptions: {
+			        series: {
+			            pointStart: 1
+			        },
+			    },
+			    legend: {
+		        	enabled: false
+		        },
+		        title: {
+		            text: 'Probability of First Recall Curve (n={{ num_sessions }})'
+		        },
+		        credits: {
+			        enabled: false
+			    },
+		        xAxis: {
+		        	title: {
+		                text: 'Serial Position'
+		            }
+		        },
+		        yAxis: {
+		        	max: 1,
+		            title: {
+		                text: 'Probability of Recall'
+		            }
+		        },
+		        series: [{
+		        	name: 'Serial Position Curve',
+		            data: {{ avg_pfr }},
+		            color: '#222C65'
+		        }]
+		    });
+		});
+
+		$(function () { 
+		    var myChart4 = Highcharts.chart('container4', {
+		        chart: {
+		            type: 'line',
+		        },
+		        plotOptions: {
+			        series: {
+			            pointStart: 1
+			        },
+			    },
+			    legend: {
+		        	enabled: false
+		        },
+		        title: {
+		            text: 'Lag Conditional Response Probability (n={{ num_sessions }})'
+		        },
+		        credits: {
+			        enabled: false
+			    },
+		        xAxis: {
+		        	softMin: -5,
+		        	softMax: 5,
+		        	title: {
+		                text: 'Lag Distance'
+		            }
+		        },
+		        yAxis: {
+		        	max: 1,
+		            title: {
+		                text: 'Probability of Recall'
+		            }
+		        },
+		        series: [{
+		        	name: 'Lag CRP',
+		            data: pos_crp,
+		            color: '#222C65'
+		        }, {
+		        	name: 'Lag CRP',
+		            data: neg_crp,
+		            color: '#222C65'
+		        }]
+		    });
+		});
+	</script>
+	<script src="{{ url_for('static',filename='js/data.js') }}"></script>
+{% endblock %}

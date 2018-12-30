@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block sidebar %}
+	{% include 'sidebar.html' %}
+{% endblock %}
+
+{% block main %}
+	<h5 class="red-text">
+		Patient: {{ patient_id }} 
+		(Missing Data) 
+	</h5>
+{% endblock %}
+
+{% block scripts %}
+	{{ super() }}
+{% endblock %}

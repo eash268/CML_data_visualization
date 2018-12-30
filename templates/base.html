@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+
+
+<head>
+    {% block head %}
+        <!-- Meta Tags -->
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="">
+
+        <!-- Title and Favicon -->
+        <title>D-Person Data Visualization Project</title>
+        <link rel="shortcut icon" href="{{url_for('static',filename='favicon.ico')}}" type="image/x-icon">
+
+        <!-- CSS -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/index.css') }}" />
+
+        <!-- Fonts and Icons -->
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,500" type="text/css" />
+    {% endblock %}
+</head>
+
+
+
+<body>    
+    {% block sidebar %} {% endblock %}
+    <main>
+        <div class="row header-row">
+            <div class="col s12">
+                <div id="header" class="header">
+                    <h3>D-Person Data Visualization Project</h3>
+                    <h5>UPenn Computational Memory Lab</h5>
+                    <br><br>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col s12 center-align">
+                <div class="content">{% block main %} {% endblock %}</div>
+            </div>
+        </div>
+    </main>
+
+    {% block scripts %}
+        <!-- JS -->
+        <script src="https://code.highcharts.com/highcharts.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
+
+        <script src="{{ url_for('static',filename='js/index.js') }}"></script>
+    {% endblock %}
+</body>
+
+</html>

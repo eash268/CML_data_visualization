@@ -1,0 +1,29 @@
+<ul id="slide-out" class="sidenav sidenav-fixed z-depth-0 grey lighten-5">
+	<li>
+		<div class="user-view">
+
+			<div class="background">
+				<img src="https://freedesignfile.com/upload/2017/02/White-abstract-background-with-wave-vector-illustration-01.jpg">
+			</div>
+
+			<a href="/"><img class="propic" src="http://www.upmunc.org/static/images/logos/crest.png"></a>
+
+			<a href="#name"><span class="black-text name">{{ "Patient ID: " + patient_id if patient_id else "Select a patient..." }}</span></a>
+
+			<a href="#email">
+				<span class="black-text email">
+				{% if num_sessions %} 
+					{{ num_sessions }} sessions completed
+				{% endif %}
+				</span>
+			</a>
+		</div>
+	</li>
+	<li>
+		<a href="/"><i class="material-icons">home</i>Home</a>
+	</li>
+	<li>
+		<a href="https://memory.psych.upenn.edu/InternalWiki/Delivery_Boy" target="_blank"><i class="material-icons">info</i>Info</a>
+	</li>
+</ul>
+<a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>

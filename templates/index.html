@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block sidebar %}
+	{% include 'sidebar.html' %}
+{% endblock %}
+
+{% block main %}
+	<h5>Select a patient to get started:</h5>
+	<!-- Dropdown Trigger -->
+	<a class='dropdown-trigger btn' href='#' data-target='patient_dropdown'>
+		Click to see patients list   <i class="material-icons right">add</i>
+	</a>
+
+	<!-- Dropdown Structure -->
+	<ul id='patient_dropdown' class='dropdown-content'>
+		{% for p in patients %}
+		<li><a href="/patient/id/{{p}}" onclick="M.toast({html: 'Loading info for subject {{p}}...', displayLength: 50000, classes: 'rounded'})">{{p}}</a></li>
+		{% endfor %}
+	</ul>
+{% endblock %}
+
+{% block scripts %}
+	{{ super() }}
+	<script type="text/javascript">
+		$('.dropdown-trigger').dropdown();
+	</script>
+{% endblock %}
