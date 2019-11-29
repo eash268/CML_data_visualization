@@ -25,7 +25,6 @@ app.config['TEMPLATES_AUTO_RELOAD'] = True
 
 #------------------------------------------------------------------------------
 
-
 # database connection
 
 # functions
